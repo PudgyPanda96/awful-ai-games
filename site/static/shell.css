@@ -1,0 +1,9 @@
+/* Injected into every game by the build: a small, unobtrusive way back to the arcade. */
+.aag-back {
+  position: fixed; left: 12px; bottom: 12px; z-index: 2147483000;
+  font: 700 13px/1 ui-rounded, "Segoe UI", system-ui, sans-serif;
+  color: #16102b; background: #ffd23f; text-decoration: none;
+  padding: 9px 13px; border: 2px solid #000; border-radius: 999px; box-shadow: 3px 3px 0 #000;
+  opacity: .88;
+}
+.aag-back:hover, .aag-back:focus-visible { opacity: 1; transform: translate(-1px, -1px); box-shadow: 4px 4px 0 #000; }

@@ -1,0 +1,19 @@
+# build output
+dist/
+
+# dependencies (there are none yet, keep it that way if you can)
+node_modules/
+
+# Vercel local state
+.vercel/
+
+# secrets — this site should never need any, but just in case
+.env
+.env.*
+!.env.example
+
+# editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

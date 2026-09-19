@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prove You're Human — Awful AI Games</title>
+  <meta name="description" content="Seven captchas stand between you and nothing at all.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="frame">
+    <header class="bar">
+      <span class="lock" aria-hidden="true">🔒</span>
+      <span>Security check <b id="step">1</b> of <b id="total">7</b></span>
+      <span class="meter" title="How human we currently think you are">
+        humanity <b id="humanity">50</b>%
+      </span>
+    </header>
+
+    <section id="round" aria-live="polite">
+      <h1 id="prompt"></h1>
+      <p id="hint" class="hint"></p>
+      <div id="grid" class="grid" role="group" aria-label="Captcha squares"></div>
+      <div class="actions">
+        <button id="verify" class="verify" type="button">Verify</button>
+        <p id="verdict" class="verdict" role="status"></p>
+      </div>
+    </section>
+
+    <section id="result" hidden>
+      <p class="eyebrow">Assessment complete</p>
+      <h1>You are <span id="final">0</span>% human.</h1>
+      <p id="ruling" class="ruling"></p>
+      <p id="best" class="hint"></p>
+      <div class="actions">
+        <button id="again" class="verify" type="button">Try to be more human</button>
+        <button id="share" class="ghost" type="button">Copy my result</button>
+      </div>
+    </section>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
