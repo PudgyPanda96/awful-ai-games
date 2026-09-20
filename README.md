@@ -47,7 +47,17 @@ Vercel then keeps serving the last good version instead of publishing a broken s
 
 - Original only. Parody a *genre* as hard as you like; never use real game names, characters,
   logos, music or art.
-- Must work on a phone and with a keyboard.
+- **Playable and good-feeling on both PC and mobile.** Not "technically runs on a phone":
+  every game gets two first-class control schemes, designed up front.
+  - PC: keyboard (and mouse where it helps). Game keys must never scroll the page.
+  - Mobile: touch. Nothing may depend on hover, right-click or a keyboard. For action games,
+    drag-to-steer with automatic fire works well (see `games/poop-rocket`).
+  - Thumb-sized buttons (about 44px or more), a play area that works in portrait, and no page
+    scrolling, pinch-zoom or long-press menus during play (`touch-action: none`,
+    `-webkit-touch-callout: none`, `overscroll-behavior: none`).
+  - Sound: create or resume the `AudioContext` inside the first tap (iOS starts it suspended).
+  - Show the instructions that fit the device, and provide on-screen pause and mute.
+  - Test both before calling it done: keyboard in a desktop browser, touch on a real phone.
 - No tracking, no accounts, no network calls. High scores go in `localStorage`
   under a key starting with `aag.<game-slug>.`
 - Respect `prefers-reduced-motion` where it is cheap to do so.
