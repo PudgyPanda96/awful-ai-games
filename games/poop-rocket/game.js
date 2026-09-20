@@ -67,10 +67,13 @@
   let audio = null;
   let muted = store.get(MUTE_KEY) === "1";
   function ensureAudio() {
+    // iOS Safari hands back a suspended context even inside a tap; it has to be resumed.
+    if (audio && audio.state === "suspended") audio.resume().catch(() => {});
     if (audio || muted) return;
     const Ctor = window.AudioContext || window.webkitAudioContext;
     if (!Ctor) return;
     audio = new Ctor();
+    if (audio.state === "suspended") audio.resume().catch(() => {});
     const length = audio.sampleRate * 0.5;
     audio.noise = audio.createBuffer(1, length, audio.sampleRate);
     const data = audio.noise.getChannelData(0);
@@ -563,8 +566,14 @@
     event.preventDefault();
     ensureAudio();
     toGame(event);
-    if (mode === "playing") { pointer.active = true; canvas.setPointerCapture(event.pointerId); }
-    else confirmPressed();
+    if (mode !== "playing") confirmPressed();
+    // The same touch that starts (or resumes) a round also steers: no need to lift and re-touch.
+    if (mode === "playing") {
+      pointer.active = true;
+      // Capture keeps the drag alive if the finger slides off the canvas. It is a nicety:
+      // if the browser refuses, steering must still work.
+      try { canvas.setPointerCapture(event.pointerId); } catch {}
+    }
   });
   canvas.addEventListener("pointermove", (event) => { if (pointer.active) toGame(event); });
   for (const type of ["pointerup", "pointercancel"]) canvas.addEventListener(type, () => { pointer.active = false; });
