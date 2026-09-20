@@ -1,0 +1,17 @@
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; overflow: hidden; background: #05030f; }
+body { display: grid; place-items: center; touch-action: none; user-select: none; -webkit-user-select: none;
+  font-family: ui-rounded, "Segoe UI", system-ui, sans-serif; }
+
+.stage { position: relative; line-height: 0; }
+canvas { display: block; background: #0a0620; border-radius: 10px; touch-action: none;
+  box-shadow: 0 0 0 3px #000, 0 0 60px rgba(255, 138, 61, .18); }
+
+.corner { position: absolute; top: 8px; right: 8px; display: flex; gap: 6px; }
+.corner button { width: 36px; height: 36px; border-radius: 9px; border: 2px solid #000; cursor: pointer;
+  background: rgba(255, 255, 255, .12); color: #fff; font-size: 16px; line-height: 1; padding: 0;
+  -webkit-tap-highlight-color: transparent; }
+.corner button:hover, .corner button:focus-visible { background: rgba(255, 255, 255, .25); outline: none; }
+
+/* The arcade link sits where the ship flies, so it steps aside while a round is in progress. */
+body.playing .aag-back { display: none; }
