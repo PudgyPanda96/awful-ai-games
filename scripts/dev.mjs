@@ -53,6 +53,12 @@ createServer(async (request, response) => {
     await rebuild("page request");
     lastBuild = Date.now();
   }
+  // Mirror production (vercel.json: trailingSlash true). A game folder must be served WITH a
+  // trailing slash, otherwise its relative style.css / game.js resolve one folder too high.
+  if (!pathname.endsWith("/") && !path.extname(pathname)) {
+    response.writeHead(308, { location: `${pathname}/` }).end();
+    return;
+  }
   const file = await resolveFile(pathname);
   if (!file) {
     const notFound = await readFile(path.join(DIST, "404.html")).catch(() => "404");

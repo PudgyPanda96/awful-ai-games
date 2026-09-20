@@ -4,7 +4,7 @@
   "buildCommand": "node scripts/build.mjs",
   "outputDirectory": "dist",
   "cleanUrls": true,
-  "trailingSlash": false,
+  "trailingSlash": true,
   "redirects": [
     {
       "source": "/:path*",

@@ -89,6 +89,19 @@ test("game text cannot inject markup into the home page", async () => {
   assert.equal(escapeHtml(`<'">&`), "&lt;&#39;&quot;&gt;&amp;");
 });
 
+test("game URLs keep their trailing slash, and games use relative asset paths", async () => {
+  // Shipped once with trailingSlash:false: /games/x/ redirected to /games/x, so the game's
+  // relative style.css and game.js resolved to /games/style.css -> 404 -> blank white page.
+  const repo = path.resolve(import.meta.dirname, "..");
+  const vercel = JSON.parse(await readFile(path.join(repo, "vercel.json"), "utf8"));
+  assert.equal(vercel.trailingSlash, true);
+
+  const root = await fixture([["some-game", meta()]]);
+  await build({ root });
+  const home = await readFile(path.join(root, "dist", "index.html"), "utf8");
+  assert.match(home, /href="\/games\/some-game\/"/, "cards link to the folder URL, slash included");
+});
+
 test("every game gets the back-to-arcade link exactly once", () => {
   const once = injectShell("<html><body><p>game</p></body></html>");
   assert.match(once, /class="aag-back" href="\/"/);
