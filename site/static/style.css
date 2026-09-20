@@ -16,14 +16,6 @@ body {
 a { color: var(--cyan); }
 em { color: var(--yellow); font-style: normal; font-weight: 700; }
 
-/* --- review ticker --- */
-.ticker { overflow: hidden; background: var(--yellow); color: #1a1233; font-weight: 700;
-  font-size: .85rem; border-bottom: 3px solid #1a1233; }
-.ticker-track { display: flex; gap: 3rem; width: max-content; padding: .45rem 0;
-  animation: ticker 38s linear infinite; }
-.ticker-track span { white-space: nowrap; }
-@keyframes ticker { to { transform: translateX(-50%); } }
-
 /* --- hero --- */
 .hero { text-align: center; padding: clamp(2.5rem, 7vw, 5rem) 1.25rem 1.5rem; max-width: 900px;
   margin: 0 auto; }
@@ -59,24 +51,33 @@ main { max-width: 1180px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
 .card p { margin: 0; color: var(--muted); }
 .badge { font-size: .62rem; vertical-align: middle; background: var(--pink); color: #fff;
   padding: .2em .6em; border-radius: 999px; text-transform: uppercase; letter-spacing: .08em; }
-.stars { color: var(--yellow); letter-spacing: .12em; }
-blockquote { margin: 0; font-style: italic; font-size: .9rem; color: var(--ink);
-  border-left: 3px solid var(--accent); padding-left: .7rem; }
 .tags { list-style: none; display: flex; flex-wrap: wrap; gap: .4rem; margin: auto 0 0; padding: .4rem 0 0; }
 .tags li { font-size: .7rem; border: 1px solid var(--line); color: var(--muted); padding: .15em .6em;
   border-radius: 999px; }
-.empty { color: var(--muted); text-align: center; grid-column: 1 / -1; padding: 3rem 0; }
+.empty { grid-column: 1 / -1; justify-self: center; width: min(560px, 100%); text-align: center;
+  color: var(--muted); padding: 2.5rem 1.5rem; border: 3px dashed var(--line);
+  border-radius: var(--radius); }
+.empty-art { font-size: 4rem; line-height: 1; }
+.empty h3 { color: var(--ink); margin: .8rem 0 .3rem; font-size: 1.4rem; }
+.empty p { margin: 0; }
 
 /* --- faq / footer --- */
 .about { max-width: 720px; margin: 4rem auto 0; }
 .about h2 { font-size: 1.5rem; margin: 0 0 1rem; }
 .about dt { font-weight: 800; margin-top: 1rem; }
 .about dd { margin: .15rem 0 0; color: var(--muted); }
+/* --- the one sincere part of the site --- */
+.pledge { max-width: 720px; margin: 3.5rem auto 0; padding: 1.5rem 1.6rem; background: var(--bg-2);
+  border: 3px solid #000; border-radius: var(--radius); box-shadow: 7px 7px 0 var(--yellow); }
+.pledge h2 { margin: 0 0 .6rem; font-size: 1.35rem; color: var(--yellow); }
+.pledge p { margin: 0 0 .8rem; }
+.pledge strong { color: var(--ink); }
+.pledge-cta { margin: 0 !important; font-weight: 800; color: var(--cyan); }
+
 footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 2rem 1rem 3rem;
   border-top: 1px solid var(--line); }
 
 @media (prefers-reduced-motion: reduce) {
-  .ticker-track { animation: none; }
   .card, .card:hover { transition: none; transform: none; }
   html { scroll-behavior: auto; }
 }

@@ -5,7 +5,6 @@ import { createServer } from "node:http";
 import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { build } from "./build.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DIST = path.join(ROOT, "dist");
@@ -20,6 +19,9 @@ const TYPES = {
 
 async function rebuild(reason) {
   try {
+    // Re-import with a cache-busting query so edits to build.mjs itself take effect
+    // without restarting the preview (Node otherwise caches the first version it loaded).
+    const { build } = await import(`./build.mjs?t=${Date.now()}`);
     const games = await build();
     console.log(`[${new Date().toLocaleTimeString()}] built ${games.length} game(s)${reason ? ` (${reason})` : ""}`);
   } catch (error) {

@@ -12,7 +12,7 @@ async function fixture(games) {
   await writeFile(path.join(root, "site", "static", "style.css"), "body{}");
   await writeFile(
     path.join(root, "site", "index.template.html"),
-    "<main>{{cards}}</main><p>{{count}} {{games_word}} {{year}}</p>",
+    "<main>{{cards}}</main><p>{{count}} {{games_word}} {{year}}</p><p class=count>{{count_line}}</p>",
   );
   for (const [slug, meta, html = "<html><body><p>hi</p></body></html>"] of games) {
     await mkdir(path.join(root, "games", slug), { recursive: true });
@@ -53,6 +53,23 @@ test("drafts and _folders are never published; singular grammar works", async ()
   assert.ok(!existsSync(path.join(root, "dist", "games", "secret-game")));
   assert.ok(!existsSync(path.join(root, "dist", "games", "_template")));
   assert.match(await readFile(path.join(root, "dist", "index.html"), "utf8"), /1 game /);
+});
+
+test("an arcade with no games still builds a presentable page", async () => {
+  const root = await fixture([["_template", meta()]]);
+  assert.deepEqual(await build({ root }), []);
+  const home = await readFile(path.join(root, "dist", "index.html"), "utf8");
+  assert.match(home, /Nothing to play yet/);
+  assert.match(home, /first game is on its way/);
+  assert.ok(!home.includes("{{"), "no unfilled placeholders");
+});
+
+test("cards never carry ratings or reviews, even if a game.json asks for them", async () => {
+  const root = await fixture([["rated-game", meta({ stars: 5, review: "“Best game ever”" })]]);
+  await build({ root });
+  const home = await readFile(path.join(root, "dist", "index.html"), "utf8");
+  assert.ok(!/★|☆|stars|blockquote|Best game ever/.test(home));
+  assert.match(home, /<b>1<\/b> game of questionable merit/);
 });
 
 test("a broken game fails the build loudly instead of shipping a broken site", async () => {

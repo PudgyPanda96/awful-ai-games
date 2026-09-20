@@ -39,14 +39,13 @@ export async function loadGames(gamesDir) {
     }
     if (Number.isNaN(Date.parse(meta.added))) throw new Error(`games/${slug}/game.json: "added" must be a date`);
     if (meta.draft) continue; // drafts build nowhere: not on the home page, not in dist
-    games.push({ slug, color: "#7c5cff", tags: [], stars: 1, review: "", ...meta });
+    games.push({ slug, color: "#7c5cff", tags: [], ...meta });
   }
   // Newest first; title as a stable tie-break.
   return games.sort((a, b) => Date.parse(b.added) - Date.parse(a.added) || a.title.localeCompare(b.title));
 }
 
 export function renderCard(game, isNew) {
-  const stars = Math.max(0, Math.min(5, Number(game.stars) || 0));
   const tags = game.tags.map((tag) => `<li>${escapeHtml(tag)}</li>`).join("");
   return `
       <a class="card" href="/games/${game.slug}/" style="--accent:${escapeHtml(game.color)}">
@@ -54,8 +53,6 @@ export function renderCard(game, isNew) {
         <div class="card-body">
           <h3>${escapeHtml(game.title)}${isNew ? ' <span class="badge">new</span>' : ""}</h3>
           <p>${escapeHtml(game.tagline)}</p>
-          <div class="stars" aria-label="${stars} out of 5 stars">${"★".repeat(stars)}${"☆".repeat(5 - stars)}</div>
-          ${game.review ? `<blockquote>${escapeHtml(game.review)}</blockquote>` : ""}
           ${tags ? `<ul class="tags">${tags}</ul>` : ""}
         </div>
       </a>`;
@@ -83,8 +80,19 @@ export async function build({ root = ROOT, out = path.join(root, "dist"), now = 
   const fortnight = 14 * 24 * 3600 * 1000;
   const cards = games.map((g) => renderCard(g, now - Date.parse(g.added) < fortnight)).join("\n");
   const template = await readFile(path.join(root, "site", "index.template.html"), "utf8");
+  const countLine =
+    games.length === 0
+      ? "The first game is on its way. Lower your expectations now."
+      : `<b>${games.length}</b> ${games.length === 1 ? "game" : "games"} of questionable merit and counting`;
+  const emptyState = `
+      <div class="empty">
+        <div class="empty-art" aria-hidden="true">🕹️</div>
+        <h3>Nothing to play yet</h3>
+        <p>The arcade is open. The cabinets have not arrived. Check back soon.</p>
+      </div>`;
   const html = template
-    .replaceAll("{{cards}}", cards || '<p class="empty">No games yet. Somehow that is an improvement.</p>')
+    .replaceAll("{{cards}}", cards || emptyState)
+    .replaceAll("{{count_line}}", countLine)
     .replaceAll("{{count}}", String(games.length))
     .replaceAll("{{games_word}}", games.length === 1 ? "game" : "games")
     .replaceAll("{{year}}", String(now.getFullYear()));

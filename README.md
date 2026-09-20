@@ -28,8 +28,6 @@ npm test         # tests for the build script
    |---|---|
    | `title`, `tagline`, `emoji`, `added` | required. `added` is a date (`2026-09-19`); newest games come first and get a "new" badge for two weeks |
    | `color` | accent colour of the card (`#rrggbb`) |
-   | `stars` | 0–5. It should probably be 1 |
-   | `review` | a fake one-line review |
    | `tags` | short labels: genre, how long it takes, "works on phones" |
    | `draft` | `true` keeps the game off the site entirely |
 
@@ -38,6 +36,12 @@ npm test         # tests for the build script
 The home page, the "back to the arcade" link on every game, and `games.json` are generated
 by `scripts/build.mjs`. A game with a missing or broken `game.json` **fails the build** —
 Vercel then keeps serving the last good version instead of publishing a broken site.
+
+## House rules for the site
+
+- No fake reviews, star ratings or testimonials. Anywhere.
+- The FAQ and the "support indie devs" note on the home page stay. The note is sincere: AI games
+  are a joke, not a replacement for real game developers.
 
 ## House rules for games
 
