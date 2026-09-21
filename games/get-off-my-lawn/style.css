@@ -1,0 +1,25 @@
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; overflow: hidden; background: #10200f; }
+body { display: grid; place-items: center; touch-action: none; user-select: none; -webkit-user-select: none;
+  -webkit-touch-callout: none; /* no iOS long-press menu while holding a finger down to steer */
+  overscroll-behavior: none;
+  font-family: ui-rounded, "Segoe UI", system-ui, sans-serif; }
+
+.stage { position: relative; line-height: 0; }
+canvas { display: block; background: #3f9b3a; border-radius: 10px; touch-action: none;
+  box-shadow: 0 0 0 3px #000, 0 0 60px rgba(91, 191, 74, .22); }
+
+.corner { position: absolute; top: 8px; right: 8px; display: flex; gap: 6px; }
+.corner button { width: 36px; height: 36px; border-radius: 9px; border: 2px solid #000; cursor: pointer;
+  background: rgba(0, 0, 0, .35); color: #fff; font-size: 16px; line-height: 1; padding: 0;
+  -webkit-tap-highlight-color: transparent; }
+.corner button:hover, .corner button:focus-visible { background: rgba(0, 0, 0, .55); outline: none; }
+
+/* Fingers need bigger targets than mouse pointers. */
+@media (pointer: coarse) {
+  .corner { top: 10px; right: 10px; gap: 10px; }
+  .corner button { width: 46px; height: 46px; font-size: 20px; }
+}
+
+/* The arcade link sits on the play field, so it steps aside while a round is in progress. */
+body.playing .aag-back { display: none; }
